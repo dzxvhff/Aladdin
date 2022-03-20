@@ -559,13 +559,6 @@ contract Aladdin is Context, IERC20, Ownable {
         _pools.push(pool);
         _isPoolExist[pool] = true;
     }
-
-    function removePool(address pool) external{
-        require(_manager[_msgSender()], "ALD: only manager can remove pool");
-        require(_isPoolExist[pool], "ALD: pool not exist");
-        _isPoolExist[pool] = false;
-    }
-
     
     function forceAddPool(address pool) external{
         require(_manager[_msgSender()], "ALD: only manager can add pool");
