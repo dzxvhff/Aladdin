@@ -541,13 +541,13 @@ contract Aladdin is Context, IERC20, Ownable {
     }
 
     function addManager(address manager) external{
-        require(_manager[_msgSender()], "ALD: only manager can add pool");
+        require(_manager[_msgSender()], "ALD: only manager can add manager");
         require(!_manager[manager], "ALD: manager already exist");
         _manager[manager] = true;
     }
 
     function removeManager(address manager) external{
-        require(_manager[_msgSender()], "ALD: only manager can remove pool");
+        require(_manager[_msgSender()], "ALD: only manager can remove manager");
         require(_manager[manager], "ALD: manager not exist");
         _manager[manager] = false;
     }
