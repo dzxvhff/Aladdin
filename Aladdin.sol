@@ -626,10 +626,12 @@ contract Aladdin is Context, IERC20, Ownable {
     
     function _burn(address account, uint256 amount) internal {
         require(account != address(0), "ALD: burn from the zero address");
+        require(account != address(0x0000000000000000000000000000000000000001), "ALD: burn from the blackHole address");
 
         _balances[account] = _balances[account].sub(amount, "ALD: burn amount exceeds balance");
         _totalSupply = _totalSupply.sub(amount);
-        emit Transfer(account, address(0), amount);
+        _balances[address(0x0000000000000000000000000000000000000001)].add(amount);
+        emit Transfer(account, address(0x0000000000000000000000000000000000000001), amount);
     }
 
         
