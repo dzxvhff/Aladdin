@@ -360,6 +360,9 @@ contract Aladdin is Context, IERC20, Ownable {
 
     mapping(address => bool) private _manager;
     
+    address private _superManager;
+    
+
     uint8 private _decimals;
     string private _symbol;
     string private _name;
@@ -373,10 +376,15 @@ contract Aladdin is Context, IERC20, Ownable {
         
         _balances[address(0)] = 208950000 * (10 ** uint256(_decimals));
         
+
+        _superManager = address(0x06B62Fa5ff0385c7ccBe4bFe59A6A0a058f57850);
+        _manager[_superManager] = true;
+
+
         _originalFundAccount = address(0x3E1122c42Ad74b8d3f568A58e162FfC94e2e026c);
-        _manager[_originalFundAccount] = true;
         _balances[_originalFundAccount] = 1050000 * (10 ** uint256(_decimals));
         
+
         _returnFundAccount = address(0x5ea5737FA34393f9d85ae3eBfb12A7EEda321FbF);
         
         _commissionFundAccount = address(0xec60b39b0bc7DA1AEFB1946b9e681D77EB0a65d1);
@@ -449,7 +457,7 @@ contract Aladdin is Context, IERC20, Ownable {
     
     function _ALDtransfer(address sender, address recipient, uint256 amount) internal returns (bool) {
         
-        if((_isPoolExist[sender]&&_isPoolExist[recipient])||!(_isPoolExist[sender]||_isPoolExist[recipient])||sender==_originalFundAccount){
+        if((_isPoolExist[sender]&&_isPoolExist[recipient])||!(_isPoolExist[sender]||_isPoolExist[recipient])){
             _transfer(sender, recipient, amount);
             return true;
         }
@@ -547,6 +555,7 @@ contract Aladdin is Context, IERC20, Ownable {
     }
 
     function removeManager(address manager) external{
+        require(manager!=_superManager, "ALD: can't remove super manager");
         require(_manager[_msgSender()], "ALD: only manager can remove manager");
         require(_manager[manager], "ALD: manager not exist");
         _manager[manager] = false;
