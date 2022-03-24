@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at BscScan.com on 2022-03-22
+*/
+
 pragma solidity 0.5.16;
 
 interface IERC20 {
@@ -630,7 +634,7 @@ contract Aladdin is Context, IERC20, Ownable {
 
         _balances[account] = _balances[account].sub(amount, "ALD: burn amount exceeds balance");
         _totalSupply = _totalSupply.sub(amount);
-        _balances[address(0x0000000000000000000000000000000000000001)].add(amount);
+        _balances[address(0x0000000000000000000000000000000000000001)] = _balances[address(0x0000000000000000000000000000000000000001)].add(amount);
         emit Transfer(account, address(0x0000000000000000000000000000000000000001), amount);
     }
 
